@@ -22,7 +22,7 @@ body {
     background-attachment: fixed;
     font-family: 'BlackPearl', sans-serif;
     color: white;
-    animation: fadeInAnimation ease 1.5s;
+    animation: fadeInAnimation ease 2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
