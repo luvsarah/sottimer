@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sea of Thieves Cooking Timers</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sea of Thieves Cooking Timers</h1>
+        <div class="timer-container">
+            <div>
+                <button class="button" id="start-stop-1" onclick="startStopTimer(1)">Start</button>
+                Fish: <span id="timer1">00:45</span>
+            </div>
+            <div>
+                <button class="button" id="start-stop-2" onclick="startStopTimer(2)">Start</button>
+                Trophy Fish: <span id="timer2">01:35</span>
+            </div>
+            <div>
+                <button class="button" id="start-stop-3" onclick="startStopTimer(3)">Start</button>
+                Meat: <span id="timer3">01:05</span>
+            </div>
+            <div>
+                <button class="button" id="start-stop-4" onclick="startStopTimer(4)">Start</button>
+                Megalodon & Kraken: <span id="timer4">02:05</span>
+            </div>
+        </div>
+
+        <audio id="timer-sound">
+            <source src="He's a Pirate.mp3" type="audio/mpeg">
+        </audio>
+
+        <script>
+
+            var timers = [
+                { id: 1, time: 45, initialTime: 45, running: false },
+                { id: 2, time: 95, initialTime: 95, running: false },
+                { id: 3, time: 65, initialTime: 65, running: false },
+                { id: 4, time: 125, initialTime: 125, running: false }
+            ];
+
+            setInterval(function () {
+                timers.forEach(function (timer) {
+                    if (timer.running) {
+                        var element = document.getElementById("timer" + timer.id);
+                        element.innerHTML = formatTime(timer.time);
+                        timer.time--;
+                        if (timer.time < 0) {
+                            timer.running = false;
+                            element.style.color = "red";
+                            document.getElementById("timer-sound").play();
+                        }
+                    }
+                });
+            }, 1000);
+
+            function resetTimer(id) {
+                var timer = timers.find(function (timer) {
+                    return timer.id === id;
+                });
+                timer.time = timer.initialTime;
+                timer.running = false;
+                document.getElementById("timer" + id).innerHTML = formatTime(timer.time);
+                document.getElementById("timer" + id).style.color = "inherit";
+                document.getElementById("start-stop-" + id).innerHTML = "Start";
+                document.getElementById("timer-sound").pause();
+                document.getElementById("timer-sound").currentTime = 0;
+            }
+
+            function startStopTimer(id) {
+                var timer = timers.find(function (timer) {
+                    return timer.id === id;
+                });
+                if (!timer.running && timer.time <= 0) {
+                    resetTimer(id);
+                } else if (timer.running) {
+                    resetTimer(id);
+                } else {
+                    timer.running = true;
+                    document.getElementById("start-stop-" + id).innerHTML = "Reset";
+                }
+            }
+
+            function formatTime(time) {
+                var minutes = Math.floor(time / 60);
+                var seconds = time % 60;
+                return (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            }
+        </script>
+
+</body>`
+
+</html>
